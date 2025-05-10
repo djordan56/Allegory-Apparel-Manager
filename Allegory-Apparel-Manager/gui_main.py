@@ -1,56 +1,66 @@
 """
 Main GUI window for Allegory Apparel Manager
+Note: This module requires a system with a GUI environment that supports tkinter.
+If you're running in a headless or restricted environment (like some sandboxed interpreters),
+this module will not work due to missing GUI support.
 """
 
-import tkinter as tk
-import os
-from gui_product import open_product_window
-from utils import exit_app
+try:
+    import tkinter as tk
+    import os
+    from gui_product import open_product_window  # Imports function to open second window
+    from utils import exit_app  # Import exit function with validation
 
-def open_main_window():
-    root = tk.Tk()
-    root.title("Allegory Apparel Manager")
-    root.geometry("800x800")
+    # Constants
+    WINDOW_TITLE = "Allegory Apparel Manager"
+    WINDOW_SIZE = "800x800"
+    FONT_HEADER = ("Helvetica", 16)
+    IMAGE_PATH = os.path.join("assets", "images")
 
-    # Welcome Label
-    tk.Label(root, text="Welcome to Allegory Apparel Manager!", font=("Helvetica", 16)).pack(pady=20)
+    def open_main_window():
+        root = tk.Tk()
+        root.title(WINDOW_TITLE)
+        root.geometry(WINDOW_SIZE)
 
-    # Navigation Buttons
-    tk.Button(root, text="Manage Products", command=lambda: open_product_window(root)).pack(pady=10)
-    tk.Button(root, text="Exit", command=lambda: exit_app(root)).pack(pady=10)
+        # Welcome Label
+        tk.Label(root, text="Welcome to Allegory Apparel Manager!", font=FONT_HEADER).pack(pady=20)
 
-    # --- Display product images ---
-    image_path = os.path.join("assets", "images")
+        # Navigation Buttons
+        tk.Button(root, text="Manage Products", command=lambda: handle_open_product(root)).pack(pady=10)
+        tk.Button(root, text="Exit", command=lambda: handle_exit(root)).pack(pady=10)
 
-    # Sweatshirt
-    sweatshirt_img = tk.PhotoImage(file=os.path.join(image_path, "sweatshirt_black.png"))
-    sweatshirt_label = tk.Label(root, image=sweatshirt_img)
-    sweatshirt_label.image = sweatshirt_img  # prevent garbage collection
-    sweatshirt_label.pack()
-    tk.Label(root, text="Black Allegory Sweatshirt").pack()
+        # --- Display product images using a loop ---
+        products = [
+            ("sweatshirt_black.png", "Black Allegory Sweatshirt"),
+            ("shirt_white.png", "White Allegory Shirt"),
+            ("jeans_blue.png", "Blue Allegory Jeans"),
+            ("jeans_black.png", "Black Allegory Jeans")
+        ]
 
-    # White Shirt
-    shirt_img = tk.PhotoImage(file=os.path.join(image_path, "shirt_white.png"))
-    shirt_label = tk.Label(root, image=shirt_img)
-    shirt_label.image = shirt_img
-    shirt_label.pack()
-    tk.Label(root, text="White Allegory Shirt").pack()
+        for filename, label_text in products:
+            try:
+                img = tk.PhotoImage(file=os.path.join(IMAGE_PATH, filename))
+                img_label = tk.Label(root, image=img)
+                img_label.image = img  # prevent garbage collection
+                img_label.pack()
+                tk.Label(root, text=label_text).pack()
+            except Exception as e:
+                tk.Label(root, text=f"Image load failed: {filename}").pack()
 
-    # Blue Jeans
-    jeans_blue_img = tk.PhotoImage(file=os.path.join(image_path, "jeans_blue.png"))
-    jeans_blue_label = tk.Label(root, image=jeans_blue_img)
-    jeans_blue_label.image = jeans_blue_img
-    jeans_blue_label.pack()
-    tk.Label(root, text="Blue Allegory Jeans").pack()
+        root.mainloop()
 
-    # Black Jeans
-    jeans_black_img = tk.PhotoImage(file=os.path.join(image_path, "jeans_black.png"))
-    jeans_black_label = tk.Label(root, image=jeans_black_img)
-    jeans_black_label.image = jeans_black_img
-    jeans_black_label.pack()
-    tk.Label(root, text="Black Allegory Jeans").pack()
+    def handle_open_product(root):
+        open_product_window(root)
 
-    root.mainloop()
+    def handle_exit(root):
+        exit_app(root)
 
-if __name__ == "__main__":
-    open_main_window()
+    if __name__ == "__main__":
+        open_main_window()
+
+except ModuleNotFoundError as e:
+    print("This environment does not support tkinter or it is not installed.")
+    print(f"Error: {e}")
+except Exception as e:
+    print("An unexpected error occurred.")
+    print(f"Error: {e}")
