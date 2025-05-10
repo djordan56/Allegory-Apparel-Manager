@@ -1,0 +1,12 @@
+Validation Testing - Allegory Apparel Manager
+
+Test Data:
+1. Name: Shirt, Size: M, Price: 29.99 -> Pass
+2. Name: , Size: L, Price: 19.99 -> Fail (Name empty)
+3. Name: Hat, Size: XXL, Price: 15 -> Fail (Invalid size)
+4. Name: Pants, Size: S, Price: -10 -> Fail (Invalid price)
+
+Fixes:
+- Added checks for empty input
+- Enforced allowed sizes
+- Ensured price > 0

@@ -1,0 +1,18 @@
+User Manual - Allegory Apparel Manager
+
+1. How to Run:
+   - Run gui_main.py to launch the application.
+
+2. Main Features:
+   - Open main window with title.
+   - Navigate to second window to add products.
+   - Validate input fields before accepting product info.
+
+3. Using the App:
+   - Click "Manage Products" to open the product input form.
+   - Enter Name, Size (S/M/L/XL), and Price.
+   - Click "Submit" to validate and accept.
+   - Click "Close" to return or "Exit" to quit the app.
+
+4. Troubleshooting:
+   - If validation fails, follow the error message instructions.
